@@ -113,7 +113,7 @@ public class Vertrag {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				Vertrag vtg = new Vertrag();
-				vtg.setVertragnr(Integer.valueOf(rs.getString("vertranr")));
+				vtg.setVertragnr(Integer.valueOf(rs.getString("vertragnr")));
 				vtg.setPersonId(Integer.valueOf(rs.getString("perid")));
 				vtg.setImmobId(Integer.valueOf(rs.getString("immobid")));
                 vtg.setDatum(rs.getString("datum"));

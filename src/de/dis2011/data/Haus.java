@@ -133,12 +133,6 @@ public class Haus {
             
 			if (tmpHausID.isEmpty() || !tmpHausID.contains(getHausID())) // 好像还有问题，待查，tmpHausid会被覆盖？？
 			{
-System.out.println("gethausId"+getHausID());
-for (int i = 0; i < tmpHausID.size(); i++) {
-	System.out.println("tmpHausID"+tmpHausID.get(i));
-
-}
-
 				// Achtung, hier wird noch ein Parameter mitgegeben,
 				// damit spaeter generierte IDs zurueckgeliefert werden!
 				String insertSQL = 

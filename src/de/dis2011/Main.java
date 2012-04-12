@@ -1,8 +1,17 @@
 package de.dis2011;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import de.dis2011.data.DB2ConnectionManager;
 import de.dis2011.data.Haus;
 import de.dis2011.data.Immobilie;
+import de.dis2011.data.Kaufvertrag;
 import de.dis2011.data.Makler;
+import de.dis2011.data.Mietvertrag;
 import de.dis2011.data.Person;
 import de.dis2011.data.Vertrag;
 import de.dis2011.data.Wohnung;
@@ -153,7 +162,7 @@ public class Main {
 				    	showVertragMenu();
 						break;
 					case VERTRAG_UEBERSICHT:
-				    	//showImmobilieMenu(WOHNUNG);?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+						showVertragUebersicht();
 						break;
 					case QUIT:
 						return;
@@ -463,17 +472,18 @@ public class Main {
 	}
 	
 	/**
-	 * Zeigt die Personverwaltung
+	 * Zeigt die Vertragverwaltung
 	 */
 	public static void showVertragMenu() {
 		//Menüoptionen
-		final int NEW_VERTRAG = 0;
-		final int DELETE_VERTRAG = 1;
-		final int BACK = 2;
-		
+		final int NEW_HAUS_VERTRAG = 0;
+		final int NEW_WOHNUNG_VERTRAG = 1;
+		final int DELETE_VERTRAG = 2;
+		final int BACK = 3;
 		//Maklerverwaltungsmenü
-		Menu vertragMenu = new Menu("Person-Verwaltung");
-		vertragMenu.addEntry("Neuer Vertrag", NEW_VERTRAG);
+		Menu vertragMenu = new Menu("Vertrag-Verwaltung");
+		vertragMenu.addEntry("Neuer Haus Vertrag", NEW_HAUS_VERTRAG);
+		vertragMenu.addEntry("Neuer Wohnung Vertrag", NEW_WOHNUNG_VERTRAG);
 		vertragMenu.addEntry("Loeschen Vertrag", DELETE_VERTRAG);
 		vertragMenu.addEntry("Zurück zum Hauptmenü", BACK);
 		
@@ -482,8 +492,11 @@ public class Main {
 			int response = vertragMenu.show();
 			
 			switch(response) {
-				case NEW_VERTRAG:
-					newVertrag();
+				case NEW_HAUS_VERTRAG:
+					newVertrag(NEW_HAUS_VERTRAG);
+					break;
+				case NEW_WOHNUNG_VERTRAG:
+					newVertrag(NEW_WOHNUNG_VERTRAG);
 					break;
 				case DELETE_VERTRAG:
 					deleteVertrag();
@@ -499,8 +512,9 @@ public class Main {
 	 * die entprechenden Daten eingegeben hat.
 	 * HAUS = 0;
 	 * WOHNUNG = 1;
+	 * 
 	 */
-	public static void newVertrag() {
+	public static void newVertrag(int flag) {
 		
 		Vertrag vtg = new Vertrag();
 		//m.setId(Integer.valueOf(FormUtil.readString("ID")));//schom mal geandert 10.mai
@@ -511,6 +525,22 @@ public class Main {
      
 		vtg.save();
 		
+		if (flag==0) {
+			Kaufvertrag kvtg = new Kaufvertrag();
+			kvtg.setKaufnr(vtg.getVertragnr());
+			kvtg.setAnzahlRaten(FormUtil.readInt("anzahlraten"));
+			kvtg.setRatenZins(Double.valueOf(FormUtil.readString("ratenzins")));
+
+			kvtg.save();
+		}else if(flag == 1){
+			Mietvertrag mvtg = new Mietvertrag();
+			mvtg.setMietnr(vtg.getVertragnr());
+			mvtg.setMietBeginn(FormUtil.readString("mietbeginn"));
+			mvtg.setDauer(FormUtil.readInt("dauer"));
+			mvtg.setNebenKosten(Double.valueOf(FormUtil.readString("nebenkosten")));
+			
+			mvtg.save();
+		}
 		System.out.println("Vertrag mit der vertragnr "+vtg.getVertragnr()+" wurde erzeugt.");
 	}
 	
@@ -522,7 +552,67 @@ public class Main {
 	 */
 	public static void deleteVertrag() {
 		int tmpVertragNr = FormUtil.readInt("vertragnr");//schom mal geandert 10.mai
-		Person.delete(tmpVertragNr);
+		
+		Connection con = DB2ConnectionManager.getInstance().getConnection();
+		String selectSQL = "SELECT kaufnr FROM kaufvertrag ";		
+		ArrayList<Integer> tmpKaufNr = new ArrayList<Integer>();
+		try {
+	        PreparedStatement pstmtSel = con.prepareStatement(selectSQL);
+			ResultSet rs = pstmtSel.executeQuery();
+	        while (rs.next()) {
+	        	tmpKaufNr.add(Integer.valueOf(rs.getString("kaufnr")));
+	        }
+		} catch (SQLException  e) {
+			e.printStackTrace();
+		}
+
+        if (tmpKaufNr.contains(tmpVertragNr)) {
+			Kaufvertrag.delete(tmpVertragNr);
+		}else Mietvertrag.delete(tmpVertragNr);
+		Vertrag.delete(tmpVertragNr);
 		System.out.println("vertrag mit der vertragNr "+ tmpVertragNr +" wurde geloescht.");
+		
+	}
+	
+	/**
+	 * Zeigt die Vertragverwaltung
+	 */
+	public static void showVertragUebersicht() {
+		
+	    
+	    Connection con = DB2ConnectionManager.getInstance().getConnection();
+		String selectSQL1 = "SELECT * FROM vertrag ";
+		String selectSQL2 = "SELECT * FROM kaufvertrag ";
+		String selectSQL3 = "SELECT * FROM mietvertrag ";
+		try {
+	        PreparedStatement pstmtSel1 = con.prepareStatement(selectSQL1);
+	        PreparedStatement pstmtSel2 = con.prepareStatement(selectSQL2);
+	        PreparedStatement pstmtSel3 = con.prepareStatement(selectSQL3);
+
+			ResultSet rs1 = pstmtSel1.executeQuery();
+			ResultSet rs2 = pstmtSel2.executeQuery();
+			ResultSet rs3 = pstmtSel3.executeQuery();
+        	
+			System.out.println("Vertrag:");
+	        while (rs1.next()) {
+	        	System.out.println("Vertrag Nummer:"+rs1.getInt(1)+"'"+"Person ID:"+rs1.getInt(2)+","
+	        			+ "Immobilie ID:"+rs1.getInt(3)+","+"Datum:"+ rs1.getString(4)+","+"Ort:"+ rs1.getString(5));
+	        	
+	        }	        	
+	        System.out.println("Kaufvertrag:"); 
+	        while (rs2.next()) {
+	        	System.out.println("Kaufvertrag Nummer:"+rs2.getInt(1)+"'"+"Anzahl Raten:"+rs2.getInt(2)+","
+	        			+"Ratenzins:"+ rs2.getDouble(3));
+	        }	        	
+	        System.out.println("Mietvertrag:");
+	        while (rs3.next()) {
+	        	System.out.println("Mietvertrag Nummer:"+rs3.getInt(1)+"'"+"Mietbeginn:"+rs3.getString(2)+","
+	        			+"Dauer:"+ rs3.getInt(3)+","+"Nebenkosten:"+ rs3.getDouble(4));
+	        }
+		} catch (SQLException  e) {
+			e.printStackTrace();
+		}
+
+	    
 	}
 }
