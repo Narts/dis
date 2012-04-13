@@ -59,38 +59,38 @@ public class Kaufvertrag {
 	}
 
 
-	/**
-	 * Lädt einen Immobilie aus der Datenbank
-	 * @param id immobID des zu ladenden Immobilie
-	 * @return Immobilie-Instanz
-	 */
-	public static Kaufvertrag load(int kaufnr) {
-		try {
-			// Hole Verbindung
-			Connection con = DB2ConnectionManager.getInstance().getConnection();
-
-			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM kaufvertrag WHERE kaufnr = ?";
-			PreparedStatement pstmt = con.prepareStatement(selectSQL);
-			pstmt.setInt(1, kaufnr);
-
-			// Führe Anfrage aus
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				Kaufvertrag kvtg = new Kaufvertrag();
-				kvtg.setKaufnr(kaufnr);
-				kvtg.setAnzahlRaten(rs.getInt("anzahlraten"));
-				kvtg.setRatenZins(rs.getInt("ratenzins"));
-
-				rs.close();
-				pstmt.close();
-				return kvtg;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * Lädt einen Immobilie aus der Datenbank
+//	 * @param id immobID des zu ladenden Immobilie
+//	 * @return Immobilie-Instanz
+//	 */
+//	public static Kaufvertrag load(int kaufnr) {
+//		try {
+//			// Hole Verbindung
+//			Connection con = DB2ConnectionManager.getInstance().getConnection();
+//
+//			// Erzeuge Anfrage
+//			String selectSQL = "SELECT * FROM kaufvertrag WHERE kaufnr = ?";
+//			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+//			pstmt.setInt(1, kaufnr);
+//
+//			// Führe Anfrage aus
+//			ResultSet rs = pstmt.executeQuery();
+//			if (rs.next()) {
+//				Kaufvertrag kvtg = new Kaufvertrag();
+//				kvtg.setKaufnr(kaufnr);
+//				kvtg.setAnzahlRaten(rs.getInt("anzahlraten"));
+//				kvtg.setRatenZins(rs.getInt("ratenzins"));
+//
+//				rs.close();
+//				pstmt.close();
+//				return kvtg;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 	/**
@@ -167,5 +167,28 @@ System.out.println("update fertig");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Zeigt die Vertragverwaltung
+	 * @return 
+	 */
+    public static ResultSet showVertragUebersicht() {
+		
+    	ResultSet rs = null;
+	    Connection con = DB2ConnectionManager.getInstance().getConnection();
+		String selectSQL = "SELECT * FROM kaufvertrag ";
+		try {
+	        PreparedStatement pstmtSel = con.prepareStatement(selectSQL);
+			rs = pstmtSel.executeQuery();
+	        System.out.println("Kaufvertrag:"); 
+	        while (rs.next()) {
+	        	System.out.println("Kaufvertrag Nummer:"+rs.getInt(1)+", "+"Anzahl Raten:"+rs.getInt(2)+", "
+	        			+"Ratenzins:"+ rs.getDouble(3));
+	        }	
+		} catch (SQLException  e) {
+			e.printStackTrace();
+		}
+	return rs; 
 	}
 }

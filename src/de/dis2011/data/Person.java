@@ -78,39 +78,39 @@ public class Person {
 	}
 
 
-	/**
-	 * Lädt einen Immobilie aus der Datenbank
-	 * @param id immobID des zu ladenden Immobilie
-	 * @return Immobilie-Instanz
-	 */
-	public static Person load(int personID) {
-		try {
-			// Hole Verbindung
-			Connection con = DB2ConnectionManager.getInstance().getConnection();
-
-			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM person WHERE personID = ?";
-			PreparedStatement pstmt = con.prepareStatement(selectSQL);
-			pstmt.setInt(1, personID);
-
-			// Führe Anfrage aus
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				Person psn = new Person();
-              	psn.setPersonID(personID);
-              	psn.setVorname(rs.getString("vorname"));
-              	psn.setNachname(rs.getString("nachname"));
-              	psn.setAdresse(rs.getString("adresse"));
-				
-				rs.close();
-				pstmt.close();
-				return psn;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * Lädt einen Immobilie aus der Datenbank
+//	 * @param id immobID des zu ladenden Immobilie
+//	 * @return Immobilie-Instanz
+//	 */
+//	public static Person load(int personID) {
+//		try {
+//			// Hole Verbindung
+//			Connection con = DB2ConnectionManager.getInstance().getConnection();
+//
+//			// Erzeuge Anfrage
+//			String selectSQL = "SELECT * FROM person WHERE personID = ?";
+//			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+//			pstmt.setInt(1, personID);
+//
+//			// Führe Anfrage aus
+//			ResultSet rs = pstmt.executeQuery();
+//			if (rs.next()) {
+//				Person psn = new Person();
+//              	psn.setPersonID(personID);
+//              	psn.setVorname(rs.getString("vorname"));
+//              	psn.setNachname(rs.getString("nachname"));
+//              	psn.setAdresse(rs.getString("adresse"));
+//				
+//				rs.close();
+//				pstmt.close();
+//				return psn;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 	/**

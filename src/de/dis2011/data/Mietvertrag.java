@@ -76,39 +76,39 @@ public class Mietvertrag {
 	}
 
 
-	/**
-	 * Lädt einen Immobilie aus der Datenbank
-	 * @param id immobID des zu ladenden Immobilie
-	 * @return Immobilie-Instanz
-	 */
-	public static Mietvertrag load(int mietnr) {
-		try {
-			// Hole Verbindung
-			Connection con = DB2ConnectionManager.getInstance().getConnection();
-
-			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM mietvertrag WHERE mietnr = ?";
-			PreparedStatement pstmt = con.prepareStatement(selectSQL);
-			pstmt.setInt(1, mietnr);
-
-			// Führe Anfrage aus
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				Mietvertrag mvtg = new Mietvertrag();
-				mvtg.setMietnr(mietnr);
-				mvtg.setMietBeginn(rs.getString("mietbeginn"));
-				mvtg.setDauer(rs.getInt("dauer"));
-				mvtg.setNebenKosten(rs.getDouble("nebenkosten"));
-
-				rs.close();
-				pstmt.close();
-				return mvtg;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * Lädt einen Immobilie aus der Datenbank
+//	 * @param id immobID des zu ladenden Immobilie
+//	 * @return Immobilie-Instanz
+//	 */
+//	public static Mietvertrag load(int mietnr) {
+//		try {
+//			// Hole Verbindung
+//			Connection con = DB2ConnectionManager.getInstance().getConnection();
+//
+//			// Erzeuge Anfrage
+//			String selectSQL = "SELECT * FROM mietvertrag WHERE mietnr = ?";
+//			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+//			pstmt.setInt(1, mietnr);
+//
+//			// Führe Anfrage aus
+//			ResultSet rs = pstmt.executeQuery();
+//			if (rs.next()) {
+//				Mietvertrag mvtg = new Mietvertrag();
+//				mvtg.setMietnr(mietnr);
+//				mvtg.setMietBeginn(rs.getString("mietbeginn"));
+//				mvtg.setDauer(rs.getInt("dauer"));
+//				mvtg.setNebenKosten(rs.getDouble("nebenkosten"));
+//
+//				rs.close();
+//				pstmt.close();
+//				return mvtg;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 	/**
@@ -189,5 +189,29 @@ System.out.println("update fertig");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Zeigt die Vertragverwaltung
+	 * @return 
+	 */
+    public static ResultSet showVertragUebersicht() {
+		
+    	ResultSet rs = null;
+	    Connection con = DB2ConnectionManager.getInstance().getConnection();
+		String selectSQL = "SELECT * FROM mietvertrag ";
+		try {
+	        PreparedStatement pstmtSel = con.prepareStatement(selectSQL);
+			rs = pstmtSel.executeQuery();
+	        System.out.println("Mietvertrag:");
+	        while (rs.next()) {
+	        	System.out.println("Mietvertrag Nummer:"+rs.getInt(1)+", "+"Mietbeginn:"+rs.getString(2)+", "
+	        			+"Dauer:"+ rs.getInt(3)+", "+"Nebenkosten:"+ rs.getDouble(4));
+	        }
+		} catch (SQLException  e) {
+			e.printStackTrace();
+		}
+
+	return rs; 
 	}
 }

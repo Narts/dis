@@ -147,7 +147,7 @@ public class Main {
 	    	
 	    	Menu mainMenu = new Menu("Typ auswaehlen");
 	    	mainMenu.addEntry("Eintragen von Person", PERSON);
-	    	mainMenu.addEntry("Abschluss von Vertraegen", VERTRAG_ABSCHLUSS);
+	    	mainMenu.addEntry("Bearbeitung von Vertraegen", VERTRAG_ABSCHLUSS);
 	    	mainMenu.addEntry("Uebersicht ueber Vertraege", VERTRAG_UEBERSICHT);
 	    	mainMenu.addEntry("Zurueck", QUIT);
 	    	
@@ -386,7 +386,7 @@ public class Main {
 	}
 	
 	/**
-	 * Zeigt die Personverwaltung
+	 * Zeigt die Person Verwaltung
 	 */
 	public static void showPersonMenu() {
 		//Menüoptionen
@@ -423,10 +423,8 @@ public class Main {
 	}
 	
 	/**
-	 * Legt einen neuen Immobilie an, nachdem der Benutzer
+	 * Legt einen neuen Person an, nachdem der Benutzer
 	 * die entprechenden Daten eingegeben hat.
-	 * HAUS = 0;
-	 * WOHNUNG = 1;
 	 */
 	public static void newPerson() {
 		
@@ -442,10 +440,8 @@ public class Main {
 	}
 	
 	/**
-	 * andern einen Immobilie, nachdem der Benutzer
+	 * andern einen Person, nachdem der Benutzer
 	 * die entprechenden Daten eingegeben hat.
-	 * HAUS = 0;
-	 * WOHNUNG = 1;
 	 */
 	public static void changePerson() {
 		Person psn = new Person();
@@ -460,10 +456,8 @@ public class Main {
 	}
 	
 	/**
-	 * loeschen einen  Immobilie , nachdem der Benutzer
-	 * die entprechenden ImmobilieID eingegeben hat.
-	 * HAUS = 0;
-	 * WOHNUNG = 1;
+	 * loeschen einen  Person , nachdem der Benutzer
+	 * die entprechenden Person ID eingegeben hat.
 	 */
 	public static void deletePerson() {
 		int tmpPersonId = Integer.valueOf(FormUtil.readString("personId"));//schom mal geandert 10.mai
@@ -472,7 +466,7 @@ public class Main {
 	}
 	
 	/**
-	 * Zeigt die Vertragverwaltung
+	 * Zeigt die Vertrag Verwaltung
 	 */
 	public static void showVertragMenu() {
 		//Menüoptionen
@@ -510,8 +504,8 @@ public class Main {
 	/**
 	 * Legt einen neuen Vertrag an, nachdem der Benutzer
 	 * die entprechenden Daten eingegeben hat.
-	 * HAUS = 0;
-	 * WOHNUNG = 1;
+	 * FLAG HAUS = 0;
+	 * FLAG WOHNUNG = 1;
 	 * 
 	 */
 	public static void newVertrag(int flag) {
@@ -545,74 +539,24 @@ public class Main {
 	}
 	
 	/**
-	 * loeschen einen  Immobilie , nachdem der Benutzer
-	 * die entprechenden ImmobilieID eingegeben hat.
-	 * HAUS = 0;
-	 * WOHNUNG = 1;
+	 * loeschen einen  Vertrag , nachdem der Benutzer
+	 * die entprechenden Vertrag Nummer eingegeben hat.
 	 */
 	public static void deleteVertrag() {
 		int tmpVertragNr = FormUtil.readInt("vertragnr");//schom mal geandert 10.mai
-		
-		Connection con = DB2ConnectionManager.getInstance().getConnection();
-		String selectSQL = "SELECT kaufnr FROM kaufvertrag ";		
-		ArrayList<Integer> tmpKaufNr = new ArrayList<Integer>();
-		try {
-	        PreparedStatement pstmtSel = con.prepareStatement(selectSQL);
-			ResultSet rs = pstmtSel.executeQuery();
-	        while (rs.next()) {
-	        	tmpKaufNr.add(Integer.valueOf(rs.getString("kaufnr")));
-	        }
-		} catch (SQLException  e) {
-			e.printStackTrace();
-		}
-
-        if (tmpKaufNr.contains(tmpVertragNr)) {
-			Kaufvertrag.delete(tmpVertragNr);
-		}else Mietvertrag.delete(tmpVertragNr);
+		Mietvertrag.delete(tmpVertragNr);
+		Kaufvertrag.delete(tmpVertragNr);
 		Vertrag.delete(tmpVertragNr);
 		System.out.println("vertrag mit der vertragNr "+ tmpVertragNr +" wurde geloescht.");
 		
 	}
 	
 	/**
-	 * Zeigt die Vertragverwaltung
+	 * Zeigt die Vertrag Uebersicht
 	 */
 	public static void showVertragUebersicht() {
-		
-	    
-	    Connection con = DB2ConnectionManager.getInstance().getConnection();
-		String selectSQL1 = "SELECT * FROM vertrag ";
-		String selectSQL2 = "SELECT * FROM kaufvertrag ";
-		String selectSQL3 = "SELECT * FROM mietvertrag ";
-		try {
-	        PreparedStatement pstmtSel1 = con.prepareStatement(selectSQL1);
-	        PreparedStatement pstmtSel2 = con.prepareStatement(selectSQL2);
-	        PreparedStatement pstmtSel3 = con.prepareStatement(selectSQL3);
-
-			ResultSet rs1 = pstmtSel1.executeQuery();
-			ResultSet rs2 = pstmtSel2.executeQuery();
-			ResultSet rs3 = pstmtSel3.executeQuery();
-        	
-			System.out.println("Vertrag:");
-	        while (rs1.next()) {
-	        	System.out.println("Vertrag Nummer:"+rs1.getInt(1)+"'"+"Person ID:"+rs1.getInt(2)+","
-	        			+ "Immobilie ID:"+rs1.getInt(3)+","+"Datum:"+ rs1.getString(4)+","+"Ort:"+ rs1.getString(5));
-	        	
-	        }	        	
-	        System.out.println("Kaufvertrag:"); 
-	        while (rs2.next()) {
-	        	System.out.println("Kaufvertrag Nummer:"+rs2.getInt(1)+"'"+"Anzahl Raten:"+rs2.getInt(2)+","
-	        			+"Ratenzins:"+ rs2.getDouble(3));
-	        }	        	
-	        System.out.println("Mietvertrag:");
-	        while (rs3.next()) {
-	        	System.out.println("Mietvertrag Nummer:"+rs3.getInt(1)+"'"+"Mietbeginn:"+rs3.getString(2)+","
-	        			+"Dauer:"+ rs3.getInt(3)+","+"Nebenkosten:"+ rs3.getDouble(4));
-	        }
-		} catch (SQLException  e) {
-			e.printStackTrace();
-		}
-
-	    
+		Vertrag.showVertragUebersicht();
+		Kaufvertrag.showVertragUebersicht();
+		Mietvertrag.showVertragUebersicht();
 	}
 }

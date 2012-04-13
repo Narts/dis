@@ -94,40 +94,40 @@ public class Vertrag {
 	}
 
 
-	/**
-	 * Lädt einen Immobilie aus der Datenbank
-	 * @param id immobID des zu ladenden Immobilie
-	 * @return Immobilie-Instanz
-	 */
-	public static Vertrag load(int vertragnr) {
-		try {
-			// Hole Verbindung
-			Connection con = DB2ConnectionManager.getInstance().getConnection();
-
-			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM vertrag WHERE vertragnr = ?";
-			PreparedStatement pstmt = con.prepareStatement(selectSQL);
-			pstmt.setInt(1, vertragnr);
-
-			// Führe Anfrage aus
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				Vertrag vtg = new Vertrag();
-				vtg.setVertragnr(Integer.valueOf(rs.getString("vertragnr")));
-				vtg.setPersonId(Integer.valueOf(rs.getString("perid")));
-				vtg.setImmobId(Integer.valueOf(rs.getString("immobid")));
-                vtg.setDatum(rs.getString("datum"));
-                vtg.setOrt(rs.getString("ort"));
-
-				rs.close();
-				pstmt.close();
-				return vtg;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * Lädt einen Immobilie aus der Datenbank
+//	 * @param id immobID des zu ladenden Immobilie
+//	 * @return Immobilie-Instanz
+//	 */
+//	public static Vertrag load(int vertragnr) {
+//		try {
+//			// Hole Verbindung
+//			Connection con = DB2ConnectionManager.getInstance().getConnection();
+//
+//			// Erzeuge Anfrage
+//			String selectSQL = "SELECT * FROM vertrag WHERE vertragnr = ?";
+//			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+//			pstmt.setInt(1, vertragnr);
+//
+//			// Führe Anfrage aus
+//			ResultSet rs = pstmt.executeQuery();
+//			if (rs.next()) {
+//				Vertrag vtg = new Vertrag();
+//				vtg.setVertragnr(Integer.valueOf(rs.getString("vertragnr")));
+//				vtg.setPersonId(Integer.valueOf(rs.getString("perid")));
+//				vtg.setImmobId(Integer.valueOf(rs.getString("immobid")));
+//                vtg.setDatum(rs.getString("datum"));
+//                vtg.setOrt(rs.getString("ort"));
+//
+//				rs.close();
+//				pstmt.close();
+//				return vtg;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 	/**
@@ -207,5 +207,31 @@ public class Vertrag {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Zeigt die Vertragverwaltung
+	 * @return 
+	 */
+    public static ResultSet showVertragUebersicht() {
+		
+    	ResultSet rs = null;
+	    Connection con = DB2ConnectionManager.getInstance().getConnection();
+		String selectSQL = "SELECT * FROM vertrag ";
+
+		try {
+	        PreparedStatement pstmtSel = con.prepareStatement(selectSQL);
+			rs = pstmtSel.executeQuery();
+			System.out.println("Vertrag:");
+	        while (rs.next()) {
+	        	System.out.println("Vertrag Nummer:"+rs.getInt(1)+", "+"Person ID:"+rs.getInt(2)+", "
+	        			+ "Immobilie ID:"+rs.getInt(3)+", "+"Datum:"+ rs.getString(4)+", "+"Ort:"+ rs.getString(5));
+	        	
+	        }
+		} catch (SQLException  e) {
+			e.printStackTrace();
+		}
+
+	return rs; 
 	}
 }

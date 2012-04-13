@@ -136,42 +136,42 @@ public class Immobilie {
 		}
 
 
-		/**
-		 * Lädt einen Immobilie aus der Datenbank
-		 * @param id immobID des zu ladenden Immobilie
-		 * @return Immobilie-Instanz
-		 */
-		public static Immobilie load(int immobId) {
-			try {
-				// Hole Verbindung
-				Connection con = DB2ConnectionManager.getInstance().getConnection();
-
-				// Erzeuge Anfrage
-				String selectSQL = "SELECT * FROM Immobilie WHERE ImmobID = ?";
-				PreparedStatement pstmt = con.prepareStatement(selectSQL);
-				pstmt.setInt(1, immobId);
-
-				// Führe Anfrage aus
-				ResultSet rs = pstmt.executeQuery();
-				if (rs.next()) {
-					Immobilie imb = new Immobilie();
-                    imb.setImmobId(immobId);
-                    imb.setOrt(rs.getString("ort"));
-                    imb.setPlz(Integer.valueOf(rs.getString("plz")));
-                    imb.setStrasse(rs.getString("strasse"));
-                    imb.setHausNr(Integer.valueOf(rs.getString("hausnr")));
-                    imb.setFlaeche(Double.valueOf(rs.getString("flaeche")));
-                    imb.setMaklerId(Integer.valueOf(rs.getString(rs.getString("maklerid"))));
-                  				
-					rs.close();
-					pstmt.close();
-					return imb;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
+//		/**
+//		 * Lädt einen Immobilie aus der Datenbank
+//		 * @param id immobID des zu ladenden Immobilie
+//		 * @return Immobilie-Instanz
+//		 */
+//		public static Immobilie load(int immobId) {
+//			try {
+//				// Hole Verbindung
+//				Connection con = DB2ConnectionManager.getInstance().getConnection();
+//
+//				// Erzeuge Anfrage
+//				String selectSQL = "SELECT * FROM Immobilie WHERE ImmobID = ?";
+//				PreparedStatement pstmt = con.prepareStatement(selectSQL);
+//				pstmt.setInt(1, immobId);
+//
+//				// Führe Anfrage aus
+//				ResultSet rs = pstmt.executeQuery();
+//				if (rs.next()) {
+//					Immobilie imb = new Immobilie();
+//                    imb.setImmobId(immobId);
+//                    imb.setOrt(rs.getString("ort"));
+//                    imb.setPlz(Integer.valueOf(rs.getString("plz")));
+//                    imb.setStrasse(rs.getString("strasse"));
+//                    imb.setHausNr(Integer.valueOf(rs.getString("hausnr")));
+//                    imb.setFlaeche(Double.valueOf(rs.getString("flaeche")));
+//                    imb.setMaklerId(Integer.valueOf(rs.getString(rs.getString("maklerid"))));
+//                  				
+//					rs.close();
+//					pstmt.close();
+//					return imb;
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			return null;
+//		}
 		
 		
 		/**

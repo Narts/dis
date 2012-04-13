@@ -78,39 +78,39 @@ public class Haus {
 	}
 
 
-	/**
-	 * Lädt einen Immobilie aus der Datenbank
-	 * @param id immobID des zu ladenden Immobilie
-	 * @return Immobilie-Instanz
-	 */
-	public static Haus load(int hausID) {
-		try {
-			// Hole Verbindung
-			Connection con = DB2ConnectionManager.getInstance().getConnection();
-
-			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM haus WHERE hausID = ?";
-			PreparedStatement pstmt = con.prepareStatement(selectSQL);
-			pstmt.setInt(1, hausID);
-
-			// Führe Anfrage aus
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				Haus hs = new Haus();
-              	hs.setHausID(hausID);
-              	hs.setStockwerk(Integer.valueOf(rs.getString("stockwerk")));
-              	hs.setKaufPreis(Double.valueOf(rs.getString("kaufpreis")));
-              	hs.setGarten(Boolean.valueOf(rs.getString("garten")));
-				
-				rs.close();
-				pstmt.close();
-				return hs;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * Lädt einen Immobilie aus der Datenbank
+//	 * @param id immobID des zu ladenden Immobilie
+//	 * @return Immobilie-Instanz
+//	 */
+//	public static Haus load(int hausID) {
+//		try {
+//			// Hole Verbindung
+//			Connection con = DB2ConnectionManager.getInstance().getConnection();
+//
+//			// Erzeuge Anfrage
+//			String selectSQL = "SELECT * FROM haus WHERE hausID = ?";
+//			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+//			pstmt.setInt(1, hausID);
+//
+//			// Führe Anfrage aus
+//			ResultSet rs = pstmt.executeQuery();
+//			if (rs.next()) {
+//				Haus hs = new Haus();
+//              	hs.setHausID(hausID);
+//              	hs.setStockwerk(Integer.valueOf(rs.getString("stockwerk")));
+//              	hs.setKaufPreis(Double.valueOf(rs.getString("kaufpreis")));
+//              	hs.setGarten(Boolean.valueOf(rs.getString("garten")));
+//				
+//				rs.close();
+//				pstmt.close();
+//				return hs;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 	/**

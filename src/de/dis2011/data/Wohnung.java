@@ -112,41 +112,41 @@ public class Wohnung {
 	}
 
 
-	/**
-	 * Lädt einen Wohnung aus der Datenbank
-	 * @param id wohnungID des zu ladenden Immobilie
-	 * @return wohnung-Instanz
-	 */
-	public static Wohnung load(int wohnungid) {
-		try {
-			// Hole Verbindung
-			Connection con = DB2ConnectionManager.getInstance().getConnection();
-	
-			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM wohnung WHERE wohnungid = ?";
-			PreparedStatement pstmt = con.prepareStatement(selectSQL);
-			pstmt.setInt(1, wohnungid);
-	
-			// Führe Anfrage aus
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				Wohnung whn = new Wohnung();
-				whn.setWohnungID(wohnungid);
-				whn.setStockwerk(Integer.valueOf(rs.getString("stockwerk")));
-				whn.setMietPreis(Double.valueOf(rs.getString("mietpreis")));
-				whn.setZimmer(Integer.valueOf(rs.getString("zimmer")));
-				whn.setBalkon(Boolean.valueOf(rs.getString("balkon")));
-				whn.setEbk(Boolean.valueOf(rs.getString("ebk")));
-
-				rs.close();
-				pstmt.close();
-				return whn;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * Lädt einen Wohnung aus der Datenbank
+//	 * @param id wohnungID des zu ladenden Immobilie
+//	 * @return wohnung-Instanz
+//	 */
+//	public static Wohnung load(int wohnungid) {
+//		try {
+//			// Hole Verbindung
+//			Connection con = DB2ConnectionManager.getInstance().getConnection();
+//	
+//			// Erzeuge Anfrage
+//			String selectSQL = "SELECT * FROM wohnung WHERE wohnungid = ?";
+//			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+//			pstmt.setInt(1, wohnungid);
+//	
+//			// Führe Anfrage aus
+//			ResultSet rs = pstmt.executeQuery();
+//			if (rs.next()) {
+//				Wohnung whn = new Wohnung();
+//				whn.setWohnungID(wohnungid);
+//				whn.setStockwerk(Integer.valueOf(rs.getString("stockwerk")));
+//				whn.setMietPreis(Double.valueOf(rs.getString("mietpreis")));
+//				whn.setZimmer(Integer.valueOf(rs.getString("zimmer")));
+//				whn.setBalkon(Boolean.valueOf(rs.getString("balkon")));
+//				whn.setEbk(Boolean.valueOf(rs.getString("ebk")));
+//
+//				rs.close();
+//				pstmt.close();
+//				return whn;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 	/**
