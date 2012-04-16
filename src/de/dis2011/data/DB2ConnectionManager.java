@@ -32,7 +32,7 @@ public class DB2ConnectionManager {
 		try {
 			// Holen der Einstellungen aus der db2.properties Datei
 			Properties properties = new Properties();
-			URL url = ClassLoader.getSystemResource("mysql.properties");
+			URL url = ClassLoader.getSystemResource("db2.properties");
 			FileInputStream stream = new FileInputStream(new File(url.toURI()));
 			properties.load(stream);
 			stream.close();
@@ -42,7 +42,7 @@ public class DB2ConnectionManager {
 			String jdbcUrl = properties.getProperty("jdbc_url");
 
 			// Verbindung zur DB2 herstellen
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.ibm.db2.jcc.DB2Driver");
 			_con = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPass);
 
 		} catch (FileNotFoundException e1) {

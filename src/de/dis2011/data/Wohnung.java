@@ -11,8 +11,8 @@ public class Wohnung {
 	private int stockwerk;
 	private double mietPreis;
 	private int zimmer;
-	private boolean balkon;
-	private boolean ebk;
+	private int balkon;
+	private int ebk;
 	
 
 	
@@ -83,7 +83,7 @@ public class Wohnung {
 	/**
 	 * @return the balkon
 	 */
-	public boolean isBalkon() {
+	public int getBalkon() {
 		return balkon;
 	}
 
@@ -91,7 +91,7 @@ public class Wohnung {
 	/**
 	 * @param balkon the balkon to set
 	 */
-	public void setBalkon(boolean balkon) {
+	public void setBalkon(int balkon) {
 		this.balkon = balkon;
 	}
 
@@ -99,7 +99,7 @@ public class Wohnung {
 	/**
 	 * @return the ebk
 	 */
-	public boolean isEbk() {
+	public int isEbk() {
 		return ebk;
 	}
 
@@ -107,7 +107,7 @@ public class Wohnung {
 	/**
 	 * @param ebk the ebk to set
 	 */
-	public void setEbk(boolean ebk) {
+	public void setEbk(int ebk) {
 		this.ebk = ebk;
 	}
 
@@ -187,8 +187,8 @@ public class Wohnung {
 					pstmt.setInt(2, getStockwerk());
 					pstmt.setDouble(3, getMietPreis());
 					pstmt.setInt(4, getZimmer());
-					pstmt.setBoolean(5, isBalkon());
-					pstmt.setBoolean(6, isEbk());
+					pstmt.setInt(5, getBalkon());
+					pstmt.setInt(6, isEbk());
 					pstmt.executeUpdate();
 	System.out.println("update fertig");
 	
@@ -210,8 +210,8 @@ public class Wohnung {
 				pstmt.setInt(1, getStockwerk());
 				pstmt.setDouble(2, getMietPreis());
 				pstmt.setInt(3, getZimmer());
-				pstmt.setBoolean(4,isBalkon());
-				pstmt.setBoolean(5, isEbk());
+				pstmt.setInt(4,getBalkon());
+				pstmt.setInt(5, isEbk());
 				pstmt.setInt(6, getWohnungID());
 
 				pstmt.executeUpdate();

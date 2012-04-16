@@ -12,7 +12,7 @@ public class Haus {
 	private int hausID = -1;
 	private int stockwerk;
 	private double kaufPreis;
-	private boolean garten;
+	private int garten;
 
 	/**
 	 * @return the hausID
@@ -65,7 +65,7 @@ public class Haus {
 	/**
 	 * @return the garten
 	 */
-	public boolean isGarten() {
+	public int getGarten() {
 		return garten;
 	}
 
@@ -73,7 +73,7 @@ public class Haus {
 	/**
 	 * @param garten the garten to set
 	 */
-	public void setGarten(boolean garten) {
+	public void setGarten(int garten) {
 		this.garten = garten;
 	}
 
@@ -144,7 +144,7 @@ public class Haus {
 				pstmt.setInt(1, getHausID());
 				pstmt.setInt(2, getStockwerk());
 				pstmt.setDouble(3, getKaufPreis());
-				pstmt.setBoolean(4, isGarten());
+				pstmt.setInt(4, getGarten());
 				pstmt.executeUpdate();
 System.out.println("update fertig");
 				// Hole die Id des engefuegten Datensatzes
@@ -164,7 +164,7 @@ System.out.println("update fertig");
 				// Setze Anfrage Parameter
 				pstmt.setInt(1, getStockwerk());
 				pstmt.setDouble(2, getKaufPreis());
-				pstmt.setBoolean(3, isGarten());
+				pstmt.setInt(3, getGarten());
 				pstmt.setInt(4, getHausID());
 
 				pstmt.executeUpdate();

@@ -125,7 +125,6 @@ public class Kaufvertrag {
 				pstmt.setInt(2, getAnzahlRaten());
 				pstmt.setDouble(3, getRatenZins());
 				pstmt.executeUpdate();
-System.out.println("update fertig");
 				pstmt.close();
 			} else {
 				// Falls schon eine ID vorhanden ist, mache ein Update...

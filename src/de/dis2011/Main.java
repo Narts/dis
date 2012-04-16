@@ -1,12 +1,6 @@
 package de.dis2011;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
-import de.dis2011.data.DB2ConnectionManager;
 import de.dis2011.data.Haus;
 import de.dis2011.data.Immobilie;
 import de.dis2011.data.Kaufvertrag;
@@ -312,7 +306,7 @@ public class Main {
 			hs.setHausID(imb.getImmobId());
 			hs.setStockwerk(Integer.valueOf(FormUtil.readString("stockwerk")));
 			hs.setKaufPreis(Double.valueOf(FormUtil.readString("kaufpreis")));
-			hs.setGarten(Boolean.valueOf(FormUtil.readString("garten")));
+			hs.setGarten(Integer.valueOf(FormUtil.readString("garten")));
 			hs.save();
 		}else if (typFlag == 1) {
 			Wohnung whn = new Wohnung();
@@ -320,8 +314,8 @@ public class Main {
 			whn.setStockwerk(Integer.valueOf(FormUtil.readString("stockwerk")));
 			whn.setMietPreis(Double.valueOf(FormUtil.readString("mietpreis")));
 			whn.setZimmer(Integer.valueOf(FormUtil.readString("zimmer")));
-			whn.setBalkon(Boolean.valueOf(FormUtil.readString("balkon")));
-			whn.setEbk(Boolean.valueOf(FormUtil.readString("ebk")));
+			whn.setBalkon(Integer.valueOf(FormUtil.readString("balkon")));
+			whn.setEbk(Integer.valueOf(FormUtil.readString("ebk")));
 			whn.save();
 		}else System.out.println("Ungueltig Eingabe");
 		
@@ -352,7 +346,7 @@ public class Main {
 			hs.setHausID(imb.getImmobId());
 			hs.setStockwerk(Integer.valueOf(FormUtil.readString("stockwerk")));
 			hs.setKaufPreis(Double.valueOf(FormUtil.readString("kaufpreis")));
-			hs.setGarten(Boolean.valueOf(FormUtil.readString("garten")));
+			hs.setGarten(Integer.valueOf(FormUtil.readString("garten")));
 			hs.save();
 		}else if (typFlag == 1) {
 			Wohnung whn = new Wohnung();
@@ -360,8 +354,8 @@ public class Main {
 			whn.setStockwerk(Integer.valueOf(FormUtil.readString("stockwerk")));
 			whn.setMietPreis(Double.valueOf(FormUtil.readString("mietpreis")));
 			whn.setZimmer(Integer.valueOf(FormUtil.readString("zimmer")));
-			whn.setBalkon(Boolean.valueOf(FormUtil.readString("balkon")));
-			whn.setEbk(Boolean.valueOf(FormUtil.readString("ebk")));
+			whn.setBalkon(Integer.valueOf(FormUtil.readString("balkon")));
+			whn.setEbk(Integer.valueOf(FormUtil.readString("ebk")));
 			whn.save();
 		}else System.out.println("Ungueltig Eingabe");
 		
